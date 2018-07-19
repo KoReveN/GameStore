@@ -7,6 +7,7 @@ using Moq;
 using Ninject;
 using GameStore.Domain.Abstract;
 using GameStore.Domain.Concrete;
+using System.Configuration;
 
 namespace GameStore.WebUI.Infrastructure
 {
@@ -24,7 +25,18 @@ namespace GameStore.WebUI.Infrastructure
         // Здесь размещаются привязки
         private void AddBindings()
         {
+            // Bind for GameRepository
             kernel.Bind<IGameRepository>().To<EFGameRepository>();
+
+            // Bind for OrderProcessor
+            EmailSettings emailSettings = new EmailSettings()
+            {
+                WriteAsFile = bool.Parse(ConfigurationManager
+                .AppSettings["Email.WriteAsFile"] ?? "false")
+            };
+
+            kernel.Bind<IOrderProcessor>().To<EmailOrderProcessor>()
+                .WithConstructorArgument("settings", emailSettings);
         }
 
         public object GetService(Type serviceType)

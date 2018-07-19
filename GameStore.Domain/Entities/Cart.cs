@@ -36,7 +36,7 @@ namespace GameStore.Domain.Entities
         }
 
 
-        public decimal ComputeTatalValue()
+        public decimal ComputeTotalValue()
         {
             return lineCollection.Sum(e => e.Game.Price * e.Quantity);
         }
@@ -49,7 +49,7 @@ namespace GameStore.Domain.Entities
         }
 
 
-        public IEnumerable<CartLine> Lines
+        public IReadOnlyCollection<CartLine> Lines
         {
             get { return lineCollection; }
         }
