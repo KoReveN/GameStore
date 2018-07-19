@@ -16,7 +16,7 @@ namespace GameStore.WebUI.Controllers
             repository = repo;
         }
 
-        public PartialViewResult Menu(string category = null)
+        public PartialViewResult Menu(string category = null) //, bool horizontalNav = false
         {
             ViewBag.SelectedCategory = category;
 
@@ -24,7 +24,10 @@ namespace GameStore.WebUI.Controllers
                 .Select(game => game.Category)
                 .Distinct()
                 .OrderBy(x => x);
-            return PartialView(categories);
+
+            return PartialView("FlexMenu", categories);
+            //string viewName = horizontalNav ? "MenuHorizontal" : "Menu";
+            // return PartialView(viewName, categories);
         }
     }
 }
